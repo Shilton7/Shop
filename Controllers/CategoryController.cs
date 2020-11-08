@@ -27,6 +27,9 @@ namespace Shop.Controllers
     [Route("")]
     public async Task<ActionResult<List<Category>>> Post([FromBody] Category model)
     {
+      if (!ModelState.IsValid)
+        return BadRequest(ModelState);
+
       return Ok(model);
     }
 
@@ -34,10 +37,13 @@ namespace Shop.Controllers
     [Route("{id:int}")]
     public async Task<ActionResult<List<Category>>> Put(int id, [FromBody] Category model)
     {
-      if (model.Id == id)
-        return Ok(model);
+      if (id != model.Id)
+        return NotFound(new { message = "Categoria não encontrada" });
 
-      return NotFound();
+      if (!ModelState.IsValid)
+        return BadRequest(ModelState);
+
+      return Ok(model);
     }
 
     [HttpDelete]
