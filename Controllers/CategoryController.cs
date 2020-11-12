@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Shop.Data;
@@ -37,6 +38,7 @@ namespace Shop.Controllers
 
     [HttpPost]
     [Route("")]
+    [Authorize]
     public async Task<ActionResult<List<Category>>> Post(
       [FromBody] Category model,
       [FromServices] DataContext context)
@@ -59,6 +61,7 @@ namespace Shop.Controllers
 
     [HttpPut]
     [Route("{id:int}")]
+    [Authorize]
     public async Task<ActionResult<List<Category>>> Put(
       int id,
       [FromBody] Category model,
