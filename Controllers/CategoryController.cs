@@ -9,12 +9,14 @@ using Shop.Models;
 
 namespace Shop.Controllers
 {
-  [Route("categories")]
+  [Route("v1/categories")]
 
   public class CategoryController : ControllerBase
   {
     [HttpGet]
     [Route("")]
+    [AllowAnonymous]
+    [ResponseCache(VaryByHeader = "User-Agente", Location = ResponseCacheLocation.Any, Duration = 10)]
     public async Task<ActionResult<List<Category>>> Get(
       [FromServices] DataContext context)
     {
@@ -24,6 +26,7 @@ namespace Shop.Controllers
 
     [HttpGet]
     [Route("{id:int}")]
+    [AllowAnonymous]
     public async Task<ActionResult<Category>> GetById(
       int id,
       [FromServices] DataContext context)
@@ -38,7 +41,7 @@ namespace Shop.Controllers
 
     [HttpPost]
     [Route("")]
-    [Authorize]
+    [Authorize(Roles = "manager")]
     public async Task<ActionResult<List<Category>>> Post(
       [FromBody] Category model,
       [FromServices] DataContext context)
@@ -61,7 +64,7 @@ namespace Shop.Controllers
 
     [HttpPut]
     [Route("{id:int}")]
-    [Authorize]
+    [Authorize(Roles = "manager")]
     public async Task<ActionResult<List<Category>>> Put(
       int id,
       [FromBody] Category model,
@@ -92,6 +95,7 @@ namespace Shop.Controllers
 
     [HttpDelete]
     [Route("{id:int}")]
+    [Authorize(Roles = "manager")]
     public async Task<ActionResult<List<Category>>> Delete(
       int id,
       [FromServices] DataContext context)
